@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  from: MyText
+  date: 2022-03-25
+  identifier: MyText
+  reference: MyText
+  description: MyString
+  type: 1
+  total: 1.5
+  paid: false
+
+two:
+  from: MyText
+  date: 2022-03-25
+  identifier: MyText
+  reference: MyText
+  description: MyString
+  type: 1
+  total: 1.5
+  paid: false
