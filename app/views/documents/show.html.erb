@@ -9,3 +9,7 @@
 <p>Total amount: <%= @document.total %></p>
 <p>Paid: <%= @document.paid %></p>
 
+<ul>
+    <li><%= link_to "Edit", edit_document_path(@document) %></li>
+</ul>
+

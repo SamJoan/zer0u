@@ -1,0 +1,37 @@
+<%= form_with model: @document do |form| %>
+  <div>
+    <%= form.label :from %><br>
+    <%= form.text_field :from %>
+    <% @document.errors.full_messages_for(:from).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :date %><br>
+    <%= form.text_area :date %><br>
+    <% @document.errors.full_messages_for(:date).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :document_type %><br>
+    <%= form.text_area :document_type %><br>
+    <% @document.errors.full_messages_for(:document_type).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :total %><br>
+    <%= form.text_area :total %><br>
+    <% @document.errors.full_messages_for(:total).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
