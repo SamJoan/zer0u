@@ -11,5 +11,9 @@
 
 <ul>
     <li><%= link_to "Edit", edit_document_path(@document) %></li>
+    <li><%= link_to "Destroy", document_path(@document), data: {
+      turbo_method: :delete,
+      turbo_confirm: "Are you sure?"
+    } %></li>
 </ul>
 

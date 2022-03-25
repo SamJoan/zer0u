@@ -35,6 +35,13 @@ class DocumentsController < ApplicationController
     end
   end
 
+  def destroy
+    @document = Document.find(params[:id])
+    @document.destroy
+
+    redirect_to root_path, status: :see_other
+  end
+
   private
     def document_params
       params.require(:document).permit(:from, :date, :identifier, :reference,
