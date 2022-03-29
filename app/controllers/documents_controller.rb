@@ -9,6 +9,11 @@ class DocumentsController < ApplicationController
     @document = current_user.documents.find(params[:id])
   end
 
+  def show_insecure
+    @document = Document.find(params[:id])
+    render "show"
+  end
+
   def new
     @document = Document.new
   end
