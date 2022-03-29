@@ -2,11 +2,11 @@ class DocumentsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @documents = Document.all
+    @documents = current_user.documents
   end
 
   def show
-    @document = Document.find(params[:id])
+    @document = current_user.documents.find(params[:id])
   end
 
   def new
@@ -14,7 +14,8 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    @document =  Document.new(document_params)
+    @document = Document.new(document_params)
+    @document.user = current_user
 
     if @document.save
       redirect_to @document
@@ -24,11 +25,11 @@ class DocumentsController < ApplicationController
   end
 
   def edit
-    @document = Document.find(params[:id])
+    @document = current_user.documents.find(params[:id])
   end
 
   def update
-    @document = Document.find(params[:id])
+    @document = current_user.documents.find(params[:id])
     
     if @document.update(document_params)
       redirect_to @document
@@ -38,7 +39,7 @@ class DocumentsController < ApplicationController
   end
 
   def destroy
-    @document = Document.find(params[:id])
+    @document = current_user.documents.find(params[:id])
     @document.destroy
 
     redirect_to root_path, status: :see_other

@@ -4,6 +4,7 @@ class Document < ApplicationRecord
   validates :document_type, presence: true
   validates :total, presence: true
   attribute :paid, default: false
+  belongs_to :user
   
   enum document_type: [ :bill, :invoice ] 
 end
