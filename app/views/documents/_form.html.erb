@@ -1,4 +1,9 @@
 <%= form_with model: @document do |form| %>
+  
+  <div>
+    Bills represent costs and invoices represent sales. They apply either a debit or a credit to the account balance.
+  </div>
+
   <div>
     <%= form.label :from %><br>
     <%= form.text_field :from %>
@@ -9,7 +14,7 @@
 
   <div>
     <%= form.label :date %><br>
-    <%= form.text_area :date %><br>
+    <%= form.date_select :date %><br>
     <% @document.errors.full_messages_for(:date).each do |message| %>
       <div><%= message %></div>
     <% end %>
@@ -17,7 +22,8 @@
 
   <div>
     <%= form.label :document_type %><br>
-    <%= form.text_area :document_type %><br>
+    <%= form.select :document_type, options_for_select(Document.document_types.map {|key, value| [key.titleize, Document.document_types.key(value)]}, @document.document_type) %>
+    
     <% @document.errors.full_messages_for(:document_type).each do |message| %>
       <div><%= message %></div>
     <% end %>
@@ -25,7 +31,7 @@
 
   <div>
     <%= form.label :total %><br>
-    <%= form.text_area :total %><br>
+    <%= form.number_field :total %><br>
     <% @document.errors.full_messages_for(:total).each do |message| %>
       <div><%= message %></div>
     <% end %>
