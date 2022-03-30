@@ -2,11 +2,19 @@ class DocumentsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @documents = current_user.documents
+    ApplicationRecord.with_customer_id(current_user.id) do	
+      # This fails because the query is executed outside of the block.
+      # @documents = current_user.documents
+
+      # Cause records to be loaded from the DB (See: https://apidock.com/rails/ActiveRecord/Relation/load)
+      @documents = current_user.documents.load
+    end
   end
 
   def show
-    @document = current_user.documents.find(params[:id])
+    ApplicationRecord.with_customer_id(current_user.id) do	
+      @document = current_user.documents.find(params[:id])
+    end
   end
 
   def show_insecure
@@ -14,40 +22,57 @@ class DocumentsController < ApplicationController
     render "show"
   end
 
+  def show_insecure_two
+    ApplicationRecord.with_customer_id(current_user.id) do	
+      @document = Document.find(params[:id])
+      render "show"
+    end
+  end
+
   def new
-    @document = Document.new
+    ApplicationRecord.with_customer_id(current_user.id) do	
+      @document = Document.new
+    end
   end
 
   def create
-    @document = Document.new(document_params)
-    @document.user = current_user
+    ApplicationRecord.with_customer_id(current_user.id) do	
+      @document = Document.new(document_params)
+      @document.user = current_user
 
-    if @document.save
-      redirect_to @document
-    else
-      render :new, status: :unprocessable_entity
+      if @document.save
+        redirect_to @document
+      else
+        render :new, status: :unprocessable_entity
+      end
     end
   end
 
   def edit
-    @document = current_user.documents.find(params[:id])
+    ApplicationRecord.with_customer_id(current_user.id) do	
+      @document = current_user.documents.find(params[:id])
+    end
   end
 
   def update
-    @document = current_user.documents.find(params[:id])
-    
-    if @document.update(document_params)
-      redirect_to @document
-    else
-      render :edit, status: :unprocessable_entity
+    ApplicationRecord.with_customer_id(current_user.id) do	
+      @document = current_user.documents.find(params[:id])
+      
+      if @document.update(document_params)
+        redirect_to @document
+      else
+        render :edit, status: :unprocessable_entity
+      end
     end
   end
 
   def destroy
-    @document = current_user.documents.find(params[:id])
-    @document.destroy
+    ApplicationRecord.with_customer_id(current_user.id) do	
+      @document = current_user.documents.find(params[:id])
+      @document.destroy
 
-    redirect_to root_path, status: :see_other
+      redirect_to root_path, status: :see_other
+    end
   end
 
   private
