@@ -13,7 +13,7 @@ security perspective.
 My main goal when exploring this is to prevent Insecure Direct Object Reference
 (IDOR) vulnerabilities. This vulnerability type is very common and RLS has the
 potential to introduce an additional layer of defense in depth that can prevent
-exploitation if security measures on the applicaiton level fail. 
+exploitation if security measures at the application level fail. 
 
 # Overview
 
@@ -24,7 +24,7 @@ authentication is implemented using devise.
 
 Rersourceful routes are configured and the associated controller is present in
 the [document_controller.rb](app/controllers/documents_controller.rb) file. I
-created another routefor `document_insecure/show/:id`, which shows an insecure
+created another route for `document_insecure/show/:id`, which shows an insecure
 coding pattern which leads to IDOR:
 
 ```
@@ -36,8 +36,7 @@ coding pattern which leads to IDOR:
 
 The code above is insecure because it fails to verify that the retrieved
 document belongs to the currently logged in user. The image below shows two
-browsers, each with a different session belonging to different users accessing
-the same document.
+browsers, each with a different session accessing the same document.
 
 ![Insecure Rails Implementation](img/insecure-rails-impl.JPG)
 
@@ -45,15 +44,15 @@ the same document.
 
 The idea is to create a new default where if any of the developers of our
 organisation make a mistake similar to the one above this doesn't result in the
-exfiltration of data from our DB. Here are some resources I used in order to
-learn about this:
+exfiltration of data from our database. Here are some resources I used in order
+to learn about this:
 
 * [Using Postgres Row-Level Security in Ruby on Rails by PGAnalyze](https://pganalyze.com/blog/postgres-row-level-security-ruby-rails)
 * [Designing the most performant Row Level Security schema in Postgres](https://cazzer.medium.com/designing-the-most-performant-row-level-security-strategy-in-postgres-a06084f31945)
 
 Caveat: RLS does not prevent, nor necessarily reduce the impact of SQL
 injection vulnerabilities. For more information regarding SQL injection
-vulnerabilities in Rails see [here](https://rails-sqli.org/)
+vulnerabilities in Rails see [here](https://rails-sqli.org/).
 
 If you read through the resources above it is easy to see that RLS is not a
 first-class citizen of Rails. Additionally, because RLS is highly specific to
@@ -86,7 +85,7 @@ end
 ```
 
 This creates a policy that allows access to documents only if the row's
-user\_id value is equal to a rls.customer\_id setting value. We will be setting
+user\_id value is equal to a `rls.customer_id` setting value. We will be setting
 that value to the currently logged-in user's ID at the time we make the query.
 
 We apply the migration:
@@ -196,3 +195,14 @@ the queries than the one that used the SET command. In those cases using a
 wrapping transaction together with SET LOCAL is the safest approach.
 ```
 
+Another interesting note from the documentation is this:
+
+```
+In some contexts it is important to be sure that row security is not being
+applied. For example, when taking a backup, it could be disastrous if row
+security silently caused some rows to be omitted from the backup. In such a
+situation, you can set the row_security configuration parameter to off. This
+does not in itself bypass row security; what it does is throw an error if any
+query's results would get filtered by a policy. The reason for the error can
+then be investigated and fixed.
+```
