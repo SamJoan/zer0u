@@ -13,19 +13,18 @@ security perspective.
 My main goal when exploring this is to prevent Insecure Direct Object Reference
 (IDOR) vulnerabilities. This vulnerability type is very common and RLS has the
 potential to introduce an additional layer of defense in depth that can prevent
-exploitation if security measures on the applicaiton level fail. Also I have
-never used Ruby on Rails and I need to learn for work, two birds one stone :)
+exploitation if security measures on the applicaiton level fail. 
 
 # Overview
 
 The application has a [Document](app/models/document.rb) model, which stores
-information in the database related to invoices and bills. This is related to a
+information in the database about invoices and bills. This is related to a
 [User](app/models/user.rb), which owns an arbitrary number of documents. User
 authentication is implemented using devise.
 
 Rersourceful routes are configured and the associated controller is present in
 the [document_controller.rb](app/controllers/documents_controller.rb) file. I
-created other routes for `document_insecure/show/:id`, which shows an insecure
+created another routefor `document_insecure/show/:id`, which shows an insecure
 coding pattern which leads to IDOR:
 
 ```
