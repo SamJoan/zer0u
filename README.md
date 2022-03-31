@@ -1,8 +1,5 @@
 # zer0u
 
-A proof of concept ruby on rails multi-user bookkeeping system using
-PostgreSQL's row-level security for authorisation.
-
 The main purpose of the repository is to explore the potential for integrating
 PostgreSQL's [Row Level Security
 (RLS)](https://www.postgresql.org/docs/9.5/ddl-rowsecurity.html) into a Ruby on
